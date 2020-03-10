@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "628108490848",
+    "firebase_url": "https://suaxe40.firebaseio.com",
+    "project_id": "suaxe40",
+    "storage_bucket": "suaxe40.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628108490848:android:847d99ff5f3453e61e2b05",
+        "android_client_info": {
+          "package_name": "com.suaxe4dot0"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628108490848-9o5n627etv9kb0ukngnhl8p0er6sbu14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzOjRQ8Xv03w8Qy0dqyyqWfb6QV8-fIl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628108490848-9o5n627etv9kb0ukngnhl8p0er6sbu14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
