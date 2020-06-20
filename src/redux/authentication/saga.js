@@ -30,7 +30,6 @@ function* login(actions) {
 function* getAllStation(actions) {
   const channel = new eventChannel(data => {
     let listener = getAllDataRequest('stations/', data);
-    // #2: Return the shutdown method;
     return () => {
       listener.off();
     };
@@ -42,7 +41,6 @@ function* getAllStation(actions) {
       data[k].id = k;
       return data[k];
     });
-    // #4: Pause the task until the channel emits a signal and dispatch an action in the store;
     yield put(authenticationAction.getAllStationSuccess([...stations]));
   }
 }
