@@ -19,11 +19,9 @@ class Register extends Component {
     super(props);
     this.state = {
       userName: 'Phương Nam',
-      address: 'Đội 4, Minh Tiến, TX Quảng Trị',
       password: 'Abc123456#',
       confirmPassword: 'Abc123456#',
-      phone: '0368947444',
-      addressError: null,
+      phone: '0368947845',
       passwordError: null,
       userNameError: null,
       confirmPasswordError: null,
@@ -47,10 +45,7 @@ class Register extends Component {
       .getToken()
       .then(fcmToken => {
         if (fcmToken) {
-          // user has a device token
           this.onchangeText('tokenDevice', fcmToken);
-        } else {
-          // user doesn't have a device token yet
         }
       });
   }
@@ -64,12 +59,10 @@ class Register extends Component {
   }
   register = () => {
     const {
-      address,
       password,
       userName,
       phone,
       confirmPassword,
-      addressError,
       passwordError,
       userNameError,
       confirmPasswordError,
@@ -77,22 +70,19 @@ class Register extends Component {
     } = this.state;
     const {allStation} = this.props;
 
-    if (address && password && userName && phone && confirmPassword) {
+    if (password && userName && phone && confirmPassword === password) {
       const user = {
         name: userName,
         phoneNumber: phone,
-        address: address,
         password: password,
         role: 'Station',
       };
       this.props.register(user, this.props.componentId);
       this.setState({message: null});
     } else {
-      if (!address) this.onchangeText('addressError', 'Nhập địa chỉ');
-      else this.onchangeText('addressError', null);
       if (!password) this.onchangeText('passwordError', 'Nhập mật khẩu');
       else this.onchangeText('passwordError', null);
-      if (!userName) this.onchangeText('userNameError', 'Nhập tên đăng nhập');
+      if (!userName) this.onchangeText('userNameError', 'Nhập tên');
       else this.onchangeText('userNameError', null);
       if (!phone) this.onchangeText('phoneError', 'Nhập số điện thoại');
       else this.onchangeText('phoneError', null);
@@ -104,16 +94,21 @@ class Register extends Component {
       else this.onchangeText('confirmPasswordError', null);
     }
   };
+
+  filterError = (error, fieldName) => {
+    if (typeof error === 'object')
+      return error.filter(err => err.propertyName === fieldName)[0]
+        .errorMessage;
+  };
   render() {
     const {
-      addressError,
       passwordError,
       userNameError,
       phoneError,
       confirmPasswordError,
       message,
     } = this.state;
-
+    const {error} = this.props;
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -125,21 +120,10 @@ class Register extends Component {
                 this.focusNextField('address');
               }}
               onchangeText={value => this.onchangeText('userName', value)}
-              title="Tên cửa hàng *"
+              title="Họ và tên: *"
               error={userNameError}
-              icon="https://img.icons8.com/dotty/2x/online-store.png"
+              icon="https://img.icons8.com/ios/2x/user-male-circle.png"
             />
-            <InputText
-              ref={ref => (this.address = ref)}
-              onSubmitEditing={() => {
-                this.focusNextField('phone');
-              }}
-              onchangeText={value => this.onchangeText('address', value)}
-              title="Địa chỉ"
-              error={addressError}
-              icon="https://img.icons8.com/ios/2x/address.png"
-            />
-
             <InputText
               ref={ref => (this.phone = ref)}
               onSubmitEditing={() => {
@@ -148,7 +132,9 @@ class Register extends Component {
               type="numeric"
               onchangeText={value => this.onchangeText('phone', value)}
               title="Số điện thoại *"
-              error={phoneError}
+              error={
+                phoneError ? phoneError : this.filterError(error, 'PhoneNumber')
+              }
               icon="https://img.icons8.com/ios/2x/phone.png"
             />
             <InputText
@@ -191,9 +177,11 @@ class Register extends Component {
               <Text style={{color: 'white'}}>Đăng kí</Text>
             </TouchableOpacity>
           </View>
-          <View tyle={styles.containerError}>
-            <Text style={[styles.error]}> {this.props.error} </Text>
-          </View>
+          {typeof error === 'string' ? (
+            <View tyle={styles.containerError}>
+              <Text style={[styles.error]}> {error} </Text>
+            </View>
+          ) : null}
         </View>
       </ScrollView>
     );

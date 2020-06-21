@@ -15,6 +15,7 @@ import bookDetail from '../screens/book/bookDetail';
 import alertConfirm from '../components/alertConfirm';
 import notificationNewOrder from '../screens/book/notificationNewOrder';
 import sideBar from './sideBar';
+import RegisterStation from '../screens/authentication/registerStation';
 console.disableYellowBox = true;
 
 function ReduxProvider(Component) {
@@ -97,5 +98,11 @@ export function registerScreens() {
     'sideBar',
     () => ReduxProvider(sideBar),
     () => sideBar,
+  );
+
+  Navigation.registerComponent(
+    'registerStation',
+    () => ReduxProvider(RegisterStation),
+    () => RegisterStation,
   );
 }

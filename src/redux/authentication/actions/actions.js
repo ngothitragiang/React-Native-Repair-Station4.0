@@ -13,10 +13,10 @@ export const loginSuccess = () => {
   };
 };
 
-export const loginFailed = error => {
+export const loginFailed = (error) => {
   return {
-    type: typesAction.LOGIN_SUCCESS,
-    error,
+    type: typesAction.LOGIN_FAILED,
+    error
   };
 };
 
@@ -76,33 +76,25 @@ export const registerFailed = error => {
   };
 };
 
-//GET DATA STATION INFORMATION
+//GET GET MY ACCOUNT
 
-export const getStationById = () => {
+export const getMyAccount = () => {
   return {
-    type: typesAction.GET_STATION,
+    type: typesAction.GET_MY_ACCOUNT,
   };
 };
-export const getStationByIdSuccess = data => {
+export const getMyAccountSuccess = data => {
   return {
-    type: typesAction.GET_STATION_SUCCESS,
+    type: typesAction.GET_MY_ACCOUNT_SUCCESS,
     data,
   };
 };
 
-export const getStationByIdFailed = error => {
+export const getMyAccountFailed = error => {
   return {
-    type: typesAction.GET_STATION_FAILED,
+    type: typesAction.GET_MY_ACCOUNT_FAILED,
     error,
   };
 };
 
-//CHANGE POWER
 
-export const changePower = (stationKey, status) => {
-  return {
-    type: typesAction.CHANGE_POWER,
-    stationKey,
-    status,
-  };
-};
