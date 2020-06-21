@@ -4,7 +4,7 @@ const init = {
   allStation: [],
   onLogin: false,
   stationInformation: {},
-  error: ''
+  error: '',
 };
 
 const AuthenticationReducers = (state = init, action) => {
@@ -13,14 +13,16 @@ const AuthenticationReducers = (state = init, action) => {
       return {...state, allStation: action.data};
     case typesAction.LOGIN_SUCCESS:
       return {...state, onLogin: true};
+    case typesAction.LOGIN_FAILED:
+      return {...state, onLogin: false, error: action.error};
     case typesAction.LOGOUT_SUCCESS:
       return {...state, onLogin: false};
     case typesAction.REGISTER_SUCCESS:
       return {...state};
     case typesAction.REGISTER_FAILED:
       return {...state, error: action.error};
-    case typesAction.GET_STATION_SUCCESS:
-      return {...state, stationInformation: action.data[0]};
+    case typesAction.GET_MY_ACCOUNT_SUCCESS:
+      return {...state, stationInformation: action.data};
     default:
       return {...state};
   }

@@ -31,7 +31,7 @@ export default class InputText extends Component {
     return (
       <>
         <View style={styles.container}>
-          <Image source={{uri: icon}} style={styles.image} />
+          <Image source={{uri: icon}} style={styles.image} /> 
           <TextInput
             style={styles.InputText}
             placeholder={title}

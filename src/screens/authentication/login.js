@@ -34,10 +34,7 @@ class Login extends Component {
       .getToken()
       .then(fcmToken => {
         if (fcmToken) {
-          // user has a device token
           this.onchangeText('tokenDevice', fcmToken);
-        } else {
-          // user doesn't have a device token yet
         }
       });
   }
@@ -80,6 +77,7 @@ class Login extends Component {
   };
   render() {
     const {phoneError, passwordError, message} = this.state;
+    const {error} = this.props;
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -126,6 +124,20 @@ class Login extends Component {
           </View>
           <Text style={styles.text}>Quên mật khẩu?</Text>
         </View>
+        {typeof error === 'string' ? (
+          <View>
+            <Text
+              style={{
+                marginVertical: 40,
+                fontSize: 16,
+                textAlign: 'center',
+                color: 'red',
+                marginHorizontal: 30,
+              }}>
+              {error}{' '}
+            </Text>
+          </View>
+        ) : null}
       </ScrollView>
     );
   }
@@ -175,6 +187,7 @@ const mapStateToProps = store => {
   return {
     onLogin: store.AuthenticationReducers.onLogin,
     allStation: store.AuthenticationReducers.allStation,
+    error: store.AuthenticationReducers.error,
   };
 };
 

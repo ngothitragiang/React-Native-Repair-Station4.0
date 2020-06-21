@@ -24,8 +24,6 @@ function* getAllBook() {
   });
   while (true) {
     const {data} = yield take(channel);
-    console.log('hihi9999', JSON.stringify(data, null, 4));
-
     let keys = Object.keys(data);
     let listBook = keys.map(function(k) {
       return data[k];
