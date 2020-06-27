@@ -47,11 +47,9 @@ class FormService extends Component {
     const {value, componentId, currentStation} = this.props;
 
     let service = {
-      image: image,
       name: name,
       price: price,
-      vehicle: vehicle,
-      note: note,
+      description: note,
       stationId: currentStation.id,
     };
     if (name && vehicle && price) {

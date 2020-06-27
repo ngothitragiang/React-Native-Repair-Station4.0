@@ -40,8 +40,8 @@ function* getStationById(actions) {
     const response = yield call(getStationByIdApi, actions.stationId, token);
     yield put(stationAction.getStationByIdSuccess(response.data));
   } catch (error) {
-    // console.log('hihisssss', JSON.stringify(error, null, 4));
-    console.log('error', error);
+    console.log('hihisssss', JSON.stringify(error, null, 4));
+    console.log('error', error.data);
   }
 }
 

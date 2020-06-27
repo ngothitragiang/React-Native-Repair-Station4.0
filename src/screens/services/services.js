@@ -10,6 +10,7 @@ import {
   FlatList,
   ScrollView,
   ActivityIndicator,
+  AsyncStorage,
 } from 'react-native';
 import * as serviceAction from '../../redux/service/actions/actions';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -46,65 +47,69 @@ class Service extends Component {
     });
   };
   render() {
-    const {listService, loading} = this.props;
+    const {loading, stationInformation} = this.props;
+    let listService = stationInformation.services;
+
+    console.log('service     ddffsdfsdfd', listService, null, 4);
+
     let suggestion = this.serviceSuggestion(listService, this.state.searchText);
     let data = suggestion ? suggestion : listService;
 
-    if (loading) {
-      return (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" />
-        </View>
-      );
-    } else
-      return (
-        <>
-          <ScrollView style={styles.container}>
-            <View style={styles.getRepair}>
-              <TouchableOpacity
-                onPress={() => {
-                  showModalNavigation(
-                    'serviceSetting',
-                    null,
-                    'Sữa dịch vụ',
-                    true,
-                  );
-                }}>
-                <Icon name="ios-settings" color="#00a7e7" size={30} />
-              </TouchableOpacity>
-              <View style={{flexDirection: 'row'}}>
-                <TextInput
-                  style={styles.inputSearch}
-                  placeholder="Tìm kiếm"
-                  onChangeText={text => this.onChangeText(text)}
-                />
-              </View>
-            </View>
-            <View style={styles.content}>
-              <FlatList
-                data={data}
-                renderItem={({item}) => <ItemService item={item} />}
-                numColumns={3}
-                keyExtractor={item => item.id}
+    // if (loading) {
+    //   return (
+    //     <View style={styles.loading}>
+    //       <ActivityIndicator size="large" />
+    //     </View>
+    //   );
+    // } else
+    return (
+      <>
+        <ScrollView style={styles.container}>
+          <View style={styles.getRepair}>
+            <TouchableOpacity
+              onPress={() => {
+                showModalNavigation(
+                  'serviceSetting',
+                  null,
+                  'Sữa dịch vụ',
+                  true,
+                );
+              }}>
+              <Icon name="ios-settings" color="#00a7e7" size={30} />
+            </TouchableOpacity>
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                style={styles.inputSearch}
+                placeholder="Tìm kiếm"
+                onChangeText={text => this.onChangeText(text)}
               />
             </View>
-          </ScrollView>
-          <View style={styles.containerButton}>
-            <TouchableOpacity
-              style={styles.buttonAdd}
-              onPress={() =>
-                showModalNavigation(
-                  'FormService',
-                  {dismissModal: false},
-                  'Thêm dịch vụ',
-                  true,
-                )
-              }>
-              <Text style={{color: 'white', fontSize: 20}}>+</Text>
-            </TouchableOpacity>
           </View>
-        </>
-      );
+          <View style={styles.content}>
+            <FlatList
+              data={data}
+              renderItem={({item}) => <ItemService item={item} />}
+              numColumns={3}
+              keyExtractor={item => item.id}
+            />
+          </View>
+        </ScrollView>
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            style={styles.buttonAdd}
+            onPress={() =>
+              showModalNavigation(
+                'FormService',
+                {dismissModal: false},
+                'Thêm dịch vụ',
+                true,
+              )
+            }>
+            <Text style={{color: 'white', fontSize: 20}}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </>
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -165,9 +170,11 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = store => {
+  console.log('object', AsyncStorage.getItem('stationId'));
   return {
     listService: store.ServiceReducers.services,
     loading: store.ServiceReducers.loading,
+    stationInformation: store.StationReducers.station,
   };
 };
 const mapDispatchToProps = dispatch => {

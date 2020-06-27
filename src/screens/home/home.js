@@ -49,6 +49,10 @@ class HomeFixer extends Component {
   }
   async componentDidMount() {
     const stationId = await AsyncStorage.getItem('stationId');
+    // await AsyncStorage.setItem(
+    //   'stationId',
+    //   '662e8b11-6def-43d8-9574-fcf2cb7428d6',
+    // );
     this.props.getMyAccount();
     this.props.getStationById(stationId);
   }
@@ -73,6 +77,7 @@ class HomeFixer extends Component {
   };
   render() {
     const {stationInformation} = this.props;
+
     return (
       <View style={styles.container}>
         <View
