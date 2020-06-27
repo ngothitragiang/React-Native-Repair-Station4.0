@@ -38,6 +38,23 @@ export const getStationByIdFailed = () => {
   };
 };
 
+//GET MY STATION
+export const getMyStation = () => {
+  return {
+    type: typesAction.GET_MY_STATION,
+  };
+};
+export const getMyStationSuccess = data => {
+  return {
+    type: typesAction.GET_MY_STATION_SUCCESS,
+    data,
+  };
+};
+export const getMyStationFailed = () => {
+  return {
+    type: typesAction.GET_MY_STATION_FAILED,
+  };
+};
 //CHANGE POWER
 
 export const changePower = (stationId, isOn) => {
@@ -48,10 +65,9 @@ export const changePower = (stationId, isOn) => {
   };
 };
 
-export const changePowerSuccess = changePower => {
+export const changePowerSuccess = () => {
   return {
     type: typesAction.CHANGE_POWER_SUCCESS,
-    changePower,
   };
 };
 

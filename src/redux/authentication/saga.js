@@ -13,47 +13,33 @@ import {
   getMyAccountApi,
 } from '../../api/auth';
 
-import {
-  setDataRequest,
-  getAllDataRequest,
-  getDataByIdRequest,
-  addDataRequest,
-} from '../../api/firebase/database';
 import {eventChannel} from 'redux-saga';
 import {Navigation} from 'react-native-navigation';
 import {AsyncStorage} from 'react-native';
 
 function* login(actions) {
+  console.log('logini', JSON.stringify(actions, null, 4));
+
   try {
     const response = yield call(loginApi, actions.userData);
-    yield put(authenticationAction.loginSuccess());
+
     yield AsyncStorage.setItem('token', response.data);
-    yield call(updateApi, {deviceToken: actions.tokenDevice}, response.data);
+    // yield call(updateApi, {deviceToken: actions.tokenDevice}, response.data);
+    yield put(authenticationAction.loginSuccess());
   } catch (error) {
+    console.log('logini error', JSON.stringify(error, null, 4));
+
     console.log('error saga', error.data);
-    yield showNotification('showNotification', error.data, 'error');
+    yield showNotification(
+      'showNotification',
+      'Đăng nhập không thành công',
+      'error',
+    );
     yield put(authenticationAction.loginFailed(error.data));
   }
 }
-function* getAllStation(actions) {
-  const channel = new eventChannel(data => {
-    let listener = getAllDataRequest('stations/', data);
-    return () => {
-      listener.off();
-    };
-  });
-  while (true) {
-    const {data} = yield take(channel);
-    let keys = Object.keys(data);
-    let stations = keys.map(function(k) {
-      data[k].id = k;
-      return data[k];
-    });
-    yield put(authenticationAction.getAllStationSuccess([...stations]));
-  }
-}
 
-function* logOut(actions) {
+function* logOut() {
   try {
     yield AsyncStorage.clear();
     yield put(authenticationAction.logOutSuccess());
@@ -76,7 +62,7 @@ function* register(actions) {
     yield showModalNavigation('registerStation');
     yield Navigation.dismissModal(actions.componentId);
   } catch (error) {
-    console.log('error', error.data);
+    console.log('error', error);
     yield showNotification(
       'showNotification',
       'Đăng kí không thành công!',
@@ -98,10 +84,8 @@ function* getMyAccount(actions) {
   }
 }
 
-
 const rootSagaAuthentication = () => [
   takeLatest(typesAction.LOGIN, login),
-  takeLatest(typesAction.GET_ALL_STATION, getAllStation),
   takeLatest(typesAction.LOGOUT, logOut),
   takeLatest(typesAction.REGISTER, register),
   takeLatest(typesAction.GET_MY_ACCOUNT, getMyAccount),

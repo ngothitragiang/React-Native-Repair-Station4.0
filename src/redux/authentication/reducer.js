@@ -3,7 +3,7 @@ import * as typesAction from './actions/typesAction';
 const init = {
   allStation: [],
   onLogin: false,
-  stationInformation: {},
+  myInformation: {},
   error: '',
 };
 
@@ -22,7 +22,7 @@ const AuthenticationReducers = (state = init, action) => {
     case typesAction.REGISTER_FAILED:
       return {...state, error: action.error};
     case typesAction.GET_MY_ACCOUNT_SUCCESS:
-      return {...state, stationInformation: action.data};
+      return {...state, myInformation: action.data};
     default:
       return {...state};
   }

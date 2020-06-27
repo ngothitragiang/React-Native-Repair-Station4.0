@@ -17,16 +17,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ItemService from '../../components/services/itemService';
 import {showModalNavigation} from '../../navigation/function';
 import {Navigation} from 'react-native-navigation';
-
+import {APP_COLOR} from '../../utils/colors';
 class Service extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchText: '',
     };
-  }
-  componentDidMount() {
-    this.props.getAllService();
   }
   onChangeText = text => {
     this.setState({
@@ -47,40 +44,21 @@ class Service extends Component {
     });
   };
   render() {
-    const {loading, stationInformation} = this.props;
-    let listService = stationInformation.services;
-
-    console.log('service     ddffsdfsdfd', listService, null, 4);
-
-    let suggestion = this.serviceSuggestion(listService, this.state.searchText);
+    const {loading, listService} = this.props;
+    let suggestion =
+      typeof listService === 'object'
+        ? this.serviceSuggestion(listService, this.state.searchText)
+        : null;
     let data = suggestion ? suggestion : listService;
 
-    // if (loading) {
-    //   return (
-    //     <View style={styles.loading}>
-    //       <ActivityIndicator size="large" />
-    //     </View>
-    //   );
-    // } else
     return (
       <>
         <ScrollView style={styles.container}>
           <View style={styles.getRepair}>
-            <TouchableOpacity
-              onPress={() => {
-                showModalNavigation(
-                  'serviceSetting',
-                  null,
-                  'Sữa dịch vụ',
-                  true,
-                );
-              }}>
-              <Icon name="ios-settings" color="#00a7e7" size={30} />
-            </TouchableOpacity>
             <View style={{flexDirection: 'row'}}>
               <TextInput
                 style={styles.inputSearch}
-                placeholder="Tìm kiếm"
+                placeholder="Tìm kiếm..."
                 onChangeText={text => this.onChangeText(text)}
               />
             </View>
@@ -89,7 +67,7 @@ class Service extends Component {
             <FlatList
               data={data}
               renderItem={({item}) => <ItemService item={item} />}
-              numColumns={3}
+              numColumns={2}
               keyExtractor={item => item.id}
             />
           </View>
@@ -118,25 +96,23 @@ const styles = StyleSheet.create({
   },
   getRepair: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: 30,
     paddingVertical: 10,
     backgroundColor: 'white',
     alignItems: 'center',
-    borderRadius: 5,
     borderColor: 'gray',
     borderWidth: 0.5,
+    backgroundColor: APP_COLOR,
   },
   inputSearch: {
-    width: 200,
-    height: 40,
-    // borderTopLeftRadius: 50,
-    // borderBottomLeftRadius: 50,
+    width: '100%',
+    height: 45,
     borderRadius: 50,
 
     borderColor: 'gray',
     borderWidth: 0.5,
     padding: 10,
+    backgroundColor: 'white',
   },
   buttonSearch: {
     borderColor: 'gray',
@@ -156,7 +132,7 @@ const styles = StyleSheet.create({
     right: 40,
   },
   buttonAdd: {
-    backgroundColor: '#00a7e7',
+    backgroundColor: APP_COLOR,
     justifyContent: 'center',
     alignItems: 'center',
     width: 50,
@@ -170,18 +146,11 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = store => {
-  console.log('object', AsyncStorage.getItem('stationId'));
   return {
     listService: store.ServiceReducers.services,
-    loading: store.ServiceReducers.loading,
-    stationInformation: store.StationReducers.station,
   };
 };
 const mapDispatchToProps = dispatch => {
-  return {
-    getAllService: () => {
-      dispatch(serviceAction.getAllService());
-    },
-  };
+  return {};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Service);

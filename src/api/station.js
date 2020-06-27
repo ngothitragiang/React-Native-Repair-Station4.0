@@ -7,6 +7,9 @@ export const registerStationApi = (data, token) => {
 export const getStationByIdApi = (id, token) => {
   return callApi('api/stations/' + id, 'GET', null, token);
 };
-export const changePowerApi = (id, data, token) =>{
+export const getMyStationApi = token => {
+  return callApi('api/stations/me', 'GET', null, token);
+};
+export const changePowerApi = (id, data, token) => {
   return callApi('api/stations/' + id, 'PUT', data, token);
-}
+};

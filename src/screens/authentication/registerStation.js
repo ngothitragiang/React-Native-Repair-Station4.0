@@ -24,8 +24,8 @@ class RegisterStation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stationName: 'Hong 111123',
-      address: 'stringedsf sdf',
+      stationName: 'Nam Ita',
+      address: '30 Nguyễn hữu thoại',
       vehicle: 'Xe máy',
       addressError: null,
       stationNameError: null,
@@ -58,8 +58,8 @@ class RegisterStation extends Component {
         name: stationName,
         address: address,
         vehicle: vehicle,
-        latitude: 16.26068,
-        longitude: 108.23254,
+        latitude: 16.043310,
+        longitude: 108.213320,
       };
       this.props.registerStation(station, this.props.componentId);
       this.setState({message: null});

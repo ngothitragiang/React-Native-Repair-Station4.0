@@ -10,13 +10,13 @@ class ProfileUser extends Component {
   }
 
   render() {
-    const {stationInformation} = this.props;
+    const {myInformation} = this.props;
     return (
       <View style={styles.container}>
-        <Text>Ten cua hang: {stationInformation.name}</Text>
+        <Text>Ten cua hang: {myInformation.name}</Text>
         <TouchableOpacity
           style={styles.buttonLogOut}
-          onPress={() => this.props.logOut(stationInformation.id)}>
+          onPress={() => this.props.logOut()}>
           <Text>Đăng xuất</Text>
         </TouchableOpacity>
       </View>
@@ -38,15 +38,15 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = store => {
   return {
-    stationInformation: store.AuthenticationReducers.stationInformation,
+    myInformation: store.AuthenticationReducers.myInformation,
     onLogin: store.AuthenticationReducers.onLogin,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    logOut: stationId => {
-      dispatch(authenticationAction.logOut(stationId));
+    logOut: () => {
+      dispatch(authenticationAction.logOut());
     },
   };
 };

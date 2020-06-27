@@ -13,8 +13,7 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as authenticationAction from '../../redux/authentication/actions/actions';
 import firebase from 'react-native-firebase';
-import {showModalNavigation} from '../../navigation/function';
-import startApp from '../../navigation/bottomTab';
+import {showModalNavigation, setRoot} from '../../navigation/function';
 
 class Login extends Component {
   constructor(props) {
@@ -42,7 +41,7 @@ class Login extends Component {
   componentDidUpdate() {
     const {onLogin} = this.props;
     if (onLogin) {
-      startApp();
+      setRoot('splashScreen');
     }
   }
   onchangeText = (key, value) => {

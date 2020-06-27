@@ -12,6 +12,7 @@ import {AsyncStorage} from 'react-native';
 import {
   registerStationApi,
   getStationByIdApi,
+  getMyStationApi,
   changePowerApi,
 } from '../../api/station';
 import startApp from '../../navigation/bottomTab';
@@ -40,7 +41,16 @@ function* getStationById(actions) {
     const response = yield call(getStationByIdApi, actions.stationId, token);
     yield put(stationAction.getStationByIdSuccess(response.data));
   } catch (error) {
-    console.log('hihisssss', JSON.stringify(error, null, 4));
+    console.log('error', error.data);
+  }
+}
+
+function* getMyStation() {
+  try {
+    const token = yield AsyncStorage.getItem('token');
+    const response = yield call(getMyStationApi, token);
+    yield put(stationAction.getMyStationSuccess(response.data));
+  } catch (error) {
     console.log('error', error.data);
   }
 }
@@ -56,9 +66,10 @@ function* changePower(actions) {
       },
       token,
     );
-    yield put(stationAction.changePowerSuccess(true));
+    yield put(stationAction.changePowerSuccess());
   } catch (error) {
     console.log('error change power', error.data);
+    yield put(stationAction.changePowerFailed());
   }
 }
 
@@ -66,5 +77,6 @@ const rootSagaStation = () => [
   takeLatest(typesAction.REGISTER_STATION, registerStation),
   takeLatest(typesAction.GET_STATION_BY_ID, getStationById),
   takeLatest(typesAction.CHANGE_POWER, changePower),
+  takeLatest(typesAction.GET_MY_STATION, getMyStation),
 ];
 export default rootSagaStation();

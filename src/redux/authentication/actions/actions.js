@@ -13,10 +13,10 @@ export const loginSuccess = () => {
   };
 };
 
-export const loginFailed = (error) => {
+export const loginFailed = error => {
   return {
     type: typesAction.LOGIN_FAILED,
-    error
+    error,
   };
 };
 
@@ -40,10 +40,9 @@ export const getAllStationFailed = () => {
 
 //LOGOUT
 
-export const logOut = stationId => {
+export const logOut = () => {
   return {
     type: typesAction.LOGOUT,
-    stationId,
   };
 };
 export const logOutSuccess = () => {
@@ -96,5 +95,3 @@ export const getMyAccountFailed = error => {
     error,
   };
 };
-
-
