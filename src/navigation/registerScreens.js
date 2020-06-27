@@ -2,6 +2,7 @@ import {Navigation} from 'react-native-navigation';
 import React from 'react';
 import store from '../redux/store';
 import {Provider} from 'react-redux';
+import SplashScreen from '../screens/splashScreen';
 import homeFixer from '../screens/home/home';
 import serviceFixer from '../screens/services/services';
 import FormService from '../screens/services/formService';
@@ -104,5 +105,16 @@ export function registerScreens() {
     'registerStation',
     () => ReduxProvider(RegisterStation),
     () => RegisterStation,
+  );
+
+  Navigation.registerComponent(
+    'splashScreen',
+    () => ReduxProvider(SplashScreen),
+    () => SplashScreen,
+  );
+  Navigation.registerComponent(
+    'formService',
+    () => ReduxProvider(FormService),
+    () => FormService,
   );
 }

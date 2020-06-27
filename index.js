@@ -10,8 +10,7 @@ registerScreens();
 Navigation.events().registerAppLaunchedListener(async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
-    startApp();
-    // setRoot('registerStation');
+    setRoot('splashScreen');
   } else {
     setRoot('login');
   }

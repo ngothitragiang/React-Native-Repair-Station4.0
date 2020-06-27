@@ -1,7 +1,7 @@
 import {Navigation} from 'react-native-navigation';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import {APP_COLOR} from '../utils/colors';
 export default function startApp() {
   Navigation.setRoot({
     root: {
@@ -14,6 +14,7 @@ export default function startApp() {
         },
         center: {
           bottomTabs: {
+            backgroundColor: 'red',
             children: [
               {
                 stack: {
@@ -29,11 +30,11 @@ export default function startApp() {
                       visible: false,
                     },
                     bottomTab: {
-                      text: 'Home',
+                      text: 'Trang chủ',
                       icon: require('../assets/image/icon-home.png'),
-                      selectedIconColor: '#00a7e7',
-                      selectedTextColor: '#00a7e7',
-                      iconColor: 'black',
+                      selectedIconColor: '#FFFFFF',
+                      selectedTextColor: '#FFFFFF',
+                      iconColor: '#FFFFFF',
                     },
                   },
                 },
@@ -54,9 +55,9 @@ export default function startApp() {
                     bottomTab: {
                       text: 'Hoạt động',
                       icon: require('../assets/image/icons-purchase-order.png'),
-                      selectedIconColor: '#00a7e7',
-                      selectedTextColor: '#00a7e7',
-                      iconColor: 'black',
+                      selectedIconColor: '#FFFFFF',
+                      selectedTextColor: '#FFFFFF',
+                      iconColor: '#FFFFFF',
                     },
                   },
                 },
@@ -77,9 +78,9 @@ export default function startApp() {
                     bottomTab: {
                       text: 'Dịch vụ',
                       icon: require('../assets/image/icons-car-service.png'),
-                      selectedIconColor: '#00a7e7',
-                      selectedTextColor: '#00a7e7',
-                      iconColor: 'black',
+                      selectedIconColor: '#FFFFFF',
+                      selectedTextColor: '#FFFFFF',
+                      iconColor: '#FFFFFF',
                     },
                   },
                 },
@@ -100,37 +101,19 @@ export default function startApp() {
                     bottomTab: {
                       text: 'Thông báo',
                       icon: require('../assets/image/icons8-notification-24.png'),
-                      selectedIconColor: '#00a7e7',
-                      selectedTextColor: '#00a7e7',
-                      iconColor: 'black',
-                    },
-                  },
-                },
-              },
-              {
-                stack: {
-                  children: [
-                    {
-                      component: {
-                        name: 'profileUser',
-                      },
-                    },
-                  ],
-                  options: {
-                    topBar: {
-                      visible: false,
-                    },
-                    bottomTab: {
-                      text: 'Tài khoản',
-                      icon: require('../assets/image/icons-account.png'),
-                      selectedIconColor: '#00a7e7',
-                      selectedTextColor: '#00a7e7',
-                      iconColor: 'black',
+                      selectedIconColor: '#FFFFFF',
+                      selectedTextColor: '#FFFFFF',
+                      iconColor: '#FFFFFF',
                     },
                   },
                 },
               },
             ],
+            options: {
+              bottomTabs: {
+                backgroundColor: APP_COLOR,
+              },
+            },
           },
         },
       },

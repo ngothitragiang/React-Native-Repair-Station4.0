@@ -18,7 +18,7 @@ import {connect} from 'react-redux';
 import * as authenticationAction from '../../redux/authentication/actions/actions';
 import * as stationAction from '../../redux/station/actions/actions';
 import {AsyncStorage} from 'react-native';
-
+import {APP_COLOR} from '../../utils/colors';
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 const DATA = [
@@ -47,18 +47,13 @@ class HomeFixer extends Component {
   constructor(props) {
     super(props);
   }
-  async componentDidMount() {
-    const stationId = await AsyncStorage.getItem('stationId');
-    this.props.getMyAccount();
-    this.props.getStationById(stationId);
-  }
-  changeToggleSwitch = isOn => {
-    this.props.changePower(this.props.stationInformation.id, isOn);
+  changeToggleSwitch = async isOn => {
+    await this.props.changePower(this.props.stationInformation.id, isOn);
   };
   async componentDidUpdate() {
-    const {changePower} = this.props;
-    const stationId = await AsyncStorage.getItem('stationId');
-    if (changePower) {
+    const {hasAmbulatory} = this.props;
+    if (hasAmbulatory) {
+      const stationId = await AsyncStorage.getItem('stationId');
       this.props.getStationById(stationId);
     }
   }
@@ -77,7 +72,7 @@ class HomeFixer extends Component {
       <View style={styles.container}>
         <View
           style={{
-            backgroundColor: '#3748ca',
+            backgroundColor: APP_COLOR,
             paddingVertical: 15,
             paddingHorizontal: 15,
             height: 250,
@@ -152,7 +147,6 @@ class HomeFixer extends Component {
                 borderRadius: 50,
                 justifyContent: 'center',
                 alignItems: 'center',
-                zIndex: 1000000000000,
               }}>
               <Text style={{textAlign: 'center', fontSize: 18}}>
                 {stationInformation.totalRating
@@ -230,8 +224,9 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = store => {
   return {
+    allStation: store.StationReducers.allStation,
     stationInformation: store.StationReducers.station,
-    changePower: store.StationReducers.changePower,
+    hasAmbulatory: store.StationReducers.changePower,
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -241,6 +236,9 @@ const mapDispatchToProps = dispatch => {
     },
     changePower: (stationId, isOn) => {
       dispatch(stationAction.changePower(stationId, isOn));
+    },
+    getMyStation: () => {
+      dispatch(stationAction.getMyStation());
     },
     getStationById: id => {
       dispatch(stationAction.getStationById(id));
