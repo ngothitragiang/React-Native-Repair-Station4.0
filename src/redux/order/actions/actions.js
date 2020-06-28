@@ -1,33 +1,34 @@
 import * as typesAction from './typesAction';
 
-export const getAllBook = () => {
+export const getAllOrder = stationId => {
   return {
-    type: typesAction.GET_ALL_BOOK,
+    type: typesAction.GET_ALL_ORDER,
+    stationId,
   };
 };
-export const getAllBookSuccess = data => {
+export const getAllOrderSuccess = data => {
   return {
-    type: typesAction.GET_ALL_BOOK_SUCCESS,
+    type: typesAction.GET_ALL_ORDER_SUCCESS,
     data,
   };
 };
 
-export const addServiceToBook = (data, bookId) => {
+export const addServiceToOrder = (data, orderId) => {
   return {
-    type: typesAction.ADD_SERVICE_TO_BOOK,
+    type: typesAction.ADD_SERVICE_TO_ORDER,
     data,
-    bookId,
+    orderId,
   };
 };
 
-export const addServiceToBookSuccess = () => {
+export const addServiceToOrderSuccess = () => {
   return {
-    type: typesAction.ADD_SERVICE_TO_BOOK_SUCCESS,
+    type: typesAction.ADD_SERVICE_TO_ORDER_SUCCESS,
   };
 };
-export const addServiceToBookFailed = () => {
+export const addServiceToOrderFailed = () => {
   return {
-    type: typesAction.ADD_SERVICE_TO_BOOK_FAILED,
+    type: typesAction.ADD_SERVICE_TO_ORDER_FAILED,
   };
 };
 
@@ -65,5 +66,28 @@ export const cancelConfirmSuccess = () => {
 export const cancelConfirmFailed = () => {
   return {
     type: typesAction.CANCEL_CONFIRM_FAILED,
+  };
+};
+
+//CHANGE STATUS
+
+export const updateStatus = (status, orderId) => {
+  return {
+    type: typesAction.CHANGE_STATUS,
+    orderId,
+    status,
+  };
+};
+export const updateStatusSuccess = (data) => {
+  return {
+    type: typesAction.CHANGE_STATUS_SUCCESS,
+    data
+  };
+};
+
+export const updateStatusFailed = error => {
+  return {
+    type: typesAction.CHANGE_STATUS,
+    error,
   };
 };

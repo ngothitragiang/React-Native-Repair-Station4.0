@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import NewOrder from '../../components/book/newOrder';
+import NewOrder from '../../components/order/newOrder';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import * as orderAction from '../../redux/book/actions/actions';
+import * as orderAction from '../../redux/order/actions/actions';
 import {alertConfirm} from '../../navigation/function';
 import {Navigation} from 'react-native-navigation';
 

@@ -44,13 +44,16 @@ export default function startApp() {
                   children: [
                     {
                       component: {
-                        name: 'bookMain',
+                        name: 'orderMain',
                       },
                     },
                   ],
                   options: {
                     topBar: {
-                      visible: false,
+                      visible: true,
+                      background: {
+                        translucent: false
+                      }
                     },
                     bottomTab: {
                       text: 'Hoạt động',
