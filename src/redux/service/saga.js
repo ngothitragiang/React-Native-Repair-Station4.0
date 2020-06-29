@@ -29,7 +29,6 @@ function* addService(actions) {
     );
     yield Navigation.dismissModal(actions.componentId);
   } catch (error) {
-    console.log('add error', JSON.stringify(error, null, 4));
     console.log('error add service', error);
     yield showNotification(
       'showNotification',

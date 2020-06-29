@@ -9,16 +9,22 @@ import {
   FlatList,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
-import CheckBoxItem from '../../components/book/checkBoxService';
+import CheckBoxItem from '../../components/order/checkBoxService';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import * as bookAction from '../../redux/book/actions/actions';
+import * as orderAction from '../../redux/order/actions/actions';
+import {format} from 'date-fns';
+import {DONE, WAITING, ACCEPTED, REJECTED} from '../../constants/orderStatus';
+import {ERROR_COLOR, APP_COLOR} from '../../utils/colors';
+import {AsyncStorage} from 'react-native';
+
 const deviceWidth = Dimensions.get('window').width;
 
-class BookDetail extends Component {
+class OrderDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,6 +44,13 @@ class BookDetail extends Component {
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
+  componentDidUpdate = async () => {
+    // const {loading} = this.props;
+    // if (loading) {
+    //   const stationId = await AsyncStorage.getItem('stationId');
+    //   this.props.getAllOrder(stationId);
+    // }
+  };
 
   onValueChange = valueCheckBox => {
     let {serviceSelected} = this.state;
@@ -69,16 +82,8 @@ class BookDetail extends Component {
 
   handleService = () => {
     const {serviceSelected} = this.state;
-    this.props.addServiceToBook(serviceSelected, this.props.value.id);
+    this.props.addServiceToOrder(serviceSelected, this.props.value.id);
     this.setModalVisible(!this.state.modalVisible);
-  };
-
-  filterData = () => {
-    const {dataBooks, value} = this.props;
-    const book = dataBooks.filter(item => {
-      return item.id === value.id;
-    });
-    return book[0];
   };
 
   countStars = (starsRating, styleChecked, styleUnChecked) => {
@@ -93,11 +98,11 @@ class BookDetail extends Component {
     return star;
   };
 
-  totalPrice = book => {
+  totalPrice = order => {
     let totalPrice = 0;
 
-    if (book.services) {
-      book.services.forEach(element => {
+    if (order.services) {
+      order.services.forEach(element => {
         totalPrice += parseInt(element.price);
       });
     }
@@ -105,10 +110,14 @@ class BookDetail extends Component {
     return totalPrice;
   };
 
-  render() {
-    const {listService} = this.props;
-    const book = this.filterData();
+  filterOrderId = () => {
+    const {value, dataOrders} = this.props;
+    return dataOrders.find(order => order.id === value.id);
+  };
 
+  render() {
+    const {listService, value, loading} = this.props;
+    const order = this.filterOrderId();
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -138,7 +147,7 @@ class BookDetail extends Component {
                               this.setDefaultValueServices(value);
                             }}
                             item={item}
-                            serviceSelected={book.services}
+                            serviceSelected={order.services}
                           />
                         )}
                         keyExtractor={item => item.id}
@@ -159,7 +168,7 @@ class BookDetail extends Component {
                     <Text>Hủy</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={[styles.button, {backgroundColor: '#00a7e7'}]}
+                    style={[styles.button, {backgroundColor: APP_COLOR}]}
                     onPress={() => this.handleService()}>
                     <Text style={{color: 'white'}}>Hoàn tất</Text>
                   </TouchableOpacity>
@@ -167,16 +176,61 @@ class BookDetail extends Component {
               </View>
             </View>
           </Modal>
-
+          <Text style={[styles.title, {textAlign: 'center', marginBottom: 10}]}>
+            Thông tin khách hàng
+          </Text>
           <View style={styles.row}>
-            <Text style={styles.title}>Mã đặt chuyến: </Text>
-            <Text style={styles.idOrder}> {book.id}</Text>
+            <Text style={styles.idOrder}>Mã đặt chuyến: </Text>
+            <Text style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+              {order.id.length > 18
+                ? order.id.substring(0, 18) + '...'
+                : order.id}
+            </Text>
           </View>
-          <View style={styles.between}>
-            <Text>Tên khách hàng: {book.user.fullName}</Text>
-            <Text>SDT: {book.user.phone}</Text>
+          <View>
+            <View style={styles.row}>
+              <Text style={styles.idOrder}>Điện thoại:</Text>
+              <Text
+                style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+                {order.customerPhone}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.idOrder}>Địa chỉ:</Text>
+              <Text
+                style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+                {order.address}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.idOrder}>Khoảng cách:</Text>
+              <Text
+                style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+                {order.distance / 1000} Km
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.idOrder}>Thời gian:</Text>
+              <Text
+                style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+                {format(new Date(order.createdOn), 'dd-MM-yyyy H:mma')}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.idOrder}>Tình trạng:</Text>
+              <Text
+                style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+                {order.status}
+              </Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={[styles.idOrder]}>Sử dụng xe lưu động</Text>
+              <Text
+                style={[styles.idOrder, {color: 'gray', textAlign: 'right'}]}>
+                {order.useAmbulatory ? 'Có' : 'Không'}
+              </Text>
+            </View>
           </View>
-          <Text style={{marginHorizontal: 15}}>Thời gian: {book.time}</Text>
 
           <View style={styles.line} />
           <View>
@@ -185,7 +239,7 @@ class BookDetail extends Component {
             </Text>
 
             <FlatList
-              data={book.services}
+              data={order.services}
               renderItem={({item}) => (
                 <View style={styles.between}>
                   <Text style={styles.text}>{item.name}</Text>
@@ -200,7 +254,7 @@ class BookDetail extends Component {
               <Text style={styles.text}>- 0 Vnd</Text>
             </View>
             <View style={styles.center}>
-              {book.status === 'Đang sửa' ? (
+              {order.status === ACCEPTED ? (
                 <TouchableOpacity
                   onPress={() => {
                     this.setModalVisible(!this.state.modalVisible);
@@ -230,38 +284,84 @@ class BookDetail extends Component {
               <Text style={styles.title}>Thanh toán tiền mặt</Text>
             </View>
             <Text style={[styles.title, {marginVertical: 8}]}>
-              {this.totalPrice(book)} Vnd
+              {this.totalPrice(order)} Vnd
             </Text>
           </View>
 
           <View style={styles.review}>
-            {book.status === 'Hoàn thành' ? (
+            {order.status === DONE ? (
               <Text style={{textAlign: 'center', margin: 10}}>
                 Đánh giá của khách hàng
               </Text>
             ) : null}
 
             <View style={[styles.row, {justifyContent: 'center'}]}>
-              {book.status === 'Hoàn thành' ? (
-                this.countStars(
-                  book.star,
-                  styles.iconRankChecked,
-                  styles.iconRankUnchecked,
-                )
-              ) : (
+              {order.status === DONE
+                ? this.countStars(
+                    order.star,
+                    styles.iconRankChecked,
+                    styles.iconRankUnchecked,
+                  )
+                : null}
+              {order.status === WAITING ? (
+                <View style={[styles.row]}>
+                  <TouchableOpacity
+                    style={[
+                      {
+                        backgroundColor: ERROR_COLOR,
+                      },
+                      styles.bigButton,
+                    ]}
+                    onPress={() =>
+                      this.props.onUpdateStatus(REJECTED, order.id)
+                    }>
+                    {loading ? (
+                      <ActivityIndicator size="small" />
+                    ) : (
+                      <Text style={[styles.textModal, {color: 'white'}]}>
+                        Từ chối
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      {
+                        backgroundColor: APP_COLOR,
+                      },
+                      styles.bigButton,
+                    ]}
+                    onPress={() =>
+                      this.props.onUpdateStatus(ACCEPTED, order.id)
+                    }>
+                    {loading ? (
+                      <ActivityIndicator size="small" />
+                    ) : (
+                      <Text style={[styles.textModal, {color: 'white'}]}>
+                        Chấp nhận
+                      </Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+
+              {order.status === ACCEPTED ? (
                 <TouchableOpacity
                   style={[
                     {
-                      backgroundColor: '#00a7e7',
+                      backgroundColor: APP_COLOR,
                     },
                     styles.bigButton,
                   ]}
-                  onPress={() => this.handlePay()}>
-                  <Text style={[styles.textModal, {color: 'white'}]}>
-                    Thanh toán
-                  </Text>
+                  onPress={() => this.props.onUpdateStatus(DONE, order.id)}>
+                  {loading ? (
+                    <ActivityIndicator size="small" />
+                  ) : (
+                    <Text style={[styles.textModal, {color: 'white'}]}>
+                      Thanh toán
+                    </Text>
+                  )}
                 </TouchableOpacity>
-              )}
+              ) : null}
             </View>
           </View>
         </View>
@@ -278,6 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 15,
+    marginVertical: 7,
   },
   title: {
     fontSize: 18,
@@ -286,6 +387,7 @@ const styles = StyleSheet.create({
   idOrder: {
     fontWeight: 'bold',
     fontSize: 16,
+    width: '50%',
   },
   line: {
     backgroundColor: 'gray',
@@ -335,6 +437,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     marginVertical: 10,
+    margin: 10,
   },
   center: {
     justifyContent: 'center',
@@ -352,14 +455,21 @@ const styles = StyleSheet.create({
 const mapStateToProps = store => {
   return {
     listService: store.ServiceReducers.services,
-    dataBooks: store.BookReducers.dataBook,
+    dataOrders: store.OrderReducers.dataOrder,
+    loading: store.OrderReducers.loading,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    addServiceToBook: (data, bookId) => {
-      dispatch(bookAction.addServiceToBook(data, bookId));
+    addServiceToOrder: (data, orderId) => {
+      dispatch(orderAction.addServiceToOrder(data, orderId));
+    },
+    onUpdateStatus: (status, orderId) => {
+      dispatch(orderAction.updateStatus(status, orderId));
+    },
+    getAllOrder: stationId => {
+      dispatch(orderAction.getAllOrder(stationId));
     },
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(BookDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail);
