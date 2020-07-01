@@ -48,15 +48,17 @@ class HomeFixer extends Component {
     super(props);
   }
   changeToggleSwitch = async isOn => {
+    console.log('isons',isOn)
     await this.props.changePower(this.props.stationInformation.id, isOn);
   };
   async componentDidUpdate() {
-    const {hasAmbulatory} = this.props;
-    if (hasAmbulatory) {
+    const {isAvailable} = this.props;
+    if (isAvailable) {
       const stationId = await AsyncStorage.getItem('stationId');
       this.props.getStationById(stationId);
     }
   }
+
   openSideBar = () => {
     Navigation.mergeOptions('sideBar', {
       sideMenu: {
@@ -66,6 +68,7 @@ class HomeFixer extends Component {
       },
     });
   };
+  
   render() {
     const {stationInformation} = this.props;
     return (
@@ -86,7 +89,7 @@ class HomeFixer extends Component {
             </TouchableOpacity>
 
             <ToggleSwitch
-              isOn={stationInformation.hasAmbulatory}
+              isOn={stationInformation.isAvailable}
               onColor="#4dc2ff"
               offColor="red"
               size="medium"
@@ -226,7 +229,7 @@ const mapStateToProps = store => {
   return {
     allStation: store.StationReducers.allStation,
     stationInformation: store.StationReducers.station,
-    hasAmbulatory: store.StationReducers.changePower,
+    isAvailable: store.StationReducers.changePower,
   };
 };
 const mapDispatchToProps = dispatch => {

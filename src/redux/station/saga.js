@@ -62,7 +62,7 @@ function* changePower(actions) {
       changePowerApi,
       actions.stationId,
       {
-        hasAmbulatory: actions.isOn,
+        isAvailable: actions.isOn,
       },
       token,
     );
