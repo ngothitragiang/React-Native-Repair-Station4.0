@@ -18,17 +18,13 @@ import {Navigation} from 'react-native-navigation';
 import {AsyncStorage} from 'react-native';
 
 function* login(actions) {
-  console.log('logini', JSON.stringify(actions, null, 4));
-
   try {
     const response = yield call(loginApi, actions.userData);
-
     yield AsyncStorage.setItem('token', response.data);
     yield call(updateApi, {deviceToken: actions.tokenDevice}, response.data);
     yield put(authenticationAction.loginSuccess());
   } catch (error) {
     console.log('logini error', JSON.stringify(error, null, 4));
-
     console.log('error saga', error.data);
     yield showNotification(
       'showNotification',
