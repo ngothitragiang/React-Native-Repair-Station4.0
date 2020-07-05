@@ -24,7 +24,7 @@ function* login(actions) {
     const response = yield call(loginApi, actions.userData);
 
     yield AsyncStorage.setItem('token', response.data);
-    // yield call(updateApi, {deviceToken: actions.tokenDevice}, response.data);
+    yield call(updateApi, {deviceToken: actions.tokenDevice}, response.data);
     yield put(authenticationAction.loginSuccess());
   } catch (error) {
     console.log('logini error', JSON.stringify(error, null, 4));

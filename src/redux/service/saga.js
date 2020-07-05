@@ -6,7 +6,6 @@ import store from '../store';
 import {showNotification} from '../../navigation/function';
 
 import {Navigation} from 'react-native-navigation';
-import firebase from 'react-native-firebase';
 import {eventChannel} from 'redux-saga';
 import {AsyncStorage} from 'react-native';
 import {

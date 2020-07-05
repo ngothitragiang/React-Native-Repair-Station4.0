@@ -7,6 +7,9 @@ export const registerApi = data => {
   return callApi('api/account/register', 'POST', data);
 };
 export const updateApi = (data, token) => {
+  console.log('data', data);
+  console.log('token', token);
+
   return callApi('api/account/me', 'PUT', data, token);
 };
 export const getMyAccountApi = token => {

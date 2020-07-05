@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import firebase from 'react-native-firebase';
-
 import {Navigation} from 'react-native-navigation';
 import InputText from '../../components/textInput';
 import Icon from 'react-native-vector-icons/Ionicons';
