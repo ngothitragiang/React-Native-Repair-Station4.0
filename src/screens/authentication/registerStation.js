@@ -11,7 +11,6 @@ import {
 import InputText from '../../components/textInput';
 import {connect} from 'react-redux';
 import * as stationAction from '../../redux/station/actions/actions';
-import firebase from 'react-native-firebase';
 import {Navigation} from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import startApp from '../../navigation/bottomTab';

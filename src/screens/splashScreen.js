@@ -7,7 +7,9 @@ import * as authenticationAction from '../redux/authentication/actions/actions';
 import * as stationAction from '../redux/station/actions/actions';
 import {AsyncStorage} from 'react-native';
 import startApp from '../navigation/bottomTab';
-
+import {fcmService} from '../config/notification/FCMService';
+import {localNotificationService} from '../config/notification/LocalNotificationService';
+import * as orderAction from '../redux/order/actions/actions';
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 class SplashScreen extends Component {
@@ -17,6 +19,14 @@ class SplashScreen extends Component {
   async componentDidMount() {
     await this.props.getMyAccount();
     await this.props.getMyStation();
+    // Register FCM Service
+    fcmService.register(
+      this.onRegister,
+      this.onNotification,
+      this.onOpenNotification,
+    );
+    // Configure notification options
+    localNotificationService.configure(this.onOpenNotification);
   }
 
   async componentDidUpdate() {
@@ -28,7 +38,34 @@ class SplashScreen extends Component {
       startApp();
     }
   }
+  // NOTIFICATION SETUP
+  onRegister = token => {
+    // this.props.onChangeDeviceToken(token);
+  };
 
+  onNotification = notify => {
+    const options = {
+      playSound: false,
+    };
+    localNotificationService.showNotification(
+      0,
+      notify.title,
+      notify.body,
+      notify,
+      options,
+    );
+  };
+
+  onOpenNotification = data => {
+    const notifyId = data?.id;
+    if (notifyId) {
+      console.log('SplashScreen -> onOpenNotification -> notifyId', notifyId);
+      // SHOW POP-UP HERE
+      this.props.onFetchOrders();
+      // this.props.onFetchNotifications();
+    }
+  };
+  // END NOTIFICATION SETUP
   render() {
     return (
       <View style={styles.container}>

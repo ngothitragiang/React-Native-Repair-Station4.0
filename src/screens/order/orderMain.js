@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import OrderItem from '../../components/order/orderItem';
-import firebase from 'react-native-firebase';
 import {connect} from 'react-redux';
 import * as orderAction from '../../redux/order/actions/actions';
 import {showNotification} from '../../navigation/function';

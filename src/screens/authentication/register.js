@@ -9,7 +9,7 @@ import {
 import InputText from '../../components/textInput';
 import {connect} from 'react-redux';
 import * as authenticationAction from '../../redux/authentication/actions/actions';
-import firebase from 'react-native-firebase';
+import messaging from '@react-native-firebase/messaging';
 import {Navigation} from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -40,8 +40,7 @@ class Register extends Component {
   componentDidMount() {
     this.props.getAllStation();
 
-    firebase
-      .messaging()
+    messaging()
       .getToken()
       .then(fcmToken => {
         if (fcmToken) {

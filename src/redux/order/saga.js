@@ -2,18 +2,12 @@ import {put, takeLatest, call, all, take} from 'redux-saga/effects';
 import * as typesAction from './actions/typesAction';
 import * as orderAction from './actions/actions';
 import store from '../store';
-import firebase from 'react-native-firebase';
 import {eventChannel} from 'redux-saga';
 import {showNotification} from '../../navigation/function';
 import {Navigation} from 'react-native-navigation';
 import {getAllOrderApi, updateStatusApi} from '../../api/order';
 import {AsyncStorage} from 'react-native';
 
-import {
-  getDataByIdRequest,
-  setDataRequest,
-  addDataRequest,
-} from '../../api/firebase/database';
 
 function* getAllOrder(actions) {
   try {
