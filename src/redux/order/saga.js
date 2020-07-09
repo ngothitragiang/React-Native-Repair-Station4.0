@@ -36,6 +36,7 @@ function* updateStatus(actions) {
     });
     allOrder[index].status = response.data.status;
     yield put(orderAction.updateStatusSuccess([...allOrder]));
+    Navigation.dismissAllModals();
   } catch (error) {
     console.log('get order error', error);
   }

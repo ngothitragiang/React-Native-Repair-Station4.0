@@ -24,7 +24,6 @@ function* login(actions) {
     yield call(updateApi, {deviceToken: actions.tokenDevice}, response.data);
     yield put(authenticationAction.loginSuccess());
   } catch (error) {
-    console.log('logini error', JSON.stringify(error, null, 4));
     console.log('error saga', error.data);
     yield showNotification(
       'showNotification',

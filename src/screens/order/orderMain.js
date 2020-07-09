@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import * as orderAction from '../../redux/order/actions/actions';
 import {showNotification} from '../../navigation/function';
 import {AsyncStorage} from 'react-native';
-
+import {WAITING} from '../../constants/orderStatus';
 class Order extends Component {
   constructor(props) {
     super(props);
@@ -21,20 +21,20 @@ class Order extends Component {
     const stationId = await AsyncStorage.getItem('stationId');
     this.props.getAllOrder(stationId);
   };
-  // componentDidUpdate() {
-  //   const {dataOrders} = this.props;
-  //   const newOrder = dataOrders.filter(element => {
-  //     return element.status === 'Đợi xác nhận';
-  //   });
-  //   if (newOrder.length > 0) {
-  //     showNotification(
-  //       'notificationNewOrder',
-  //       'Bạn có cuốc mới',
-  //       null,
-  //       newOrder,
-  //     );
-  //   }
-  // }
+  componentDidUpdate() {
+    const {dataOrders} = this.props;
+    const newOrder = dataOrders.filter(element => {
+      return element.status === WAITING;
+    });
+    if (newOrder.length > 0) {
+      showNotification(
+        'notificationNewOrder',
+        'Bạn có cuốc mới',
+        null,
+        newOrder,
+      );
+    }
+  }
   render() {
     const {dataOrders, loading} = this.props;
     if (loading) {
