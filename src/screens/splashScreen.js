@@ -35,7 +35,9 @@ class SplashScreen extends Component {
       let firstStationId = allStation[0].id;
       await AsyncStorage.setItem('stationId', firstStationId);
       await this.props.getStationById(firstStationId);
-      startApp();
+      setTimeout(()=>{
+        startApp();
+      }, 700);
     }
   }
   // NOTIFICATION SETUP
@@ -56,13 +58,15 @@ class SplashScreen extends Component {
     );
   };
 
-  onOpenNotification = data => {
+  onOpenNotification = async data => {
     const notifyId = data?.id;
     if (notifyId) {
       console.log('SplashScreen -> onOpenNotification -> notifyId', notifyId);
       // SHOW POP-UP HERE
-      this.props.onFetchOrders();
+     // this.props.onFetchOrders();
       // this.props.onFetchNotifications();
+      const stationId = await AsyncStorage.getItem('stationId');
+      orderAction.getAllOrder(stationId);
     }
   };
   // END NOTIFICATION SETUP
