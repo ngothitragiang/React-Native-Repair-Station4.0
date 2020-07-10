@@ -10,8 +10,9 @@ import {
 import OrderItem from '../../components/order/orderItem';
 import {connect} from 'react-redux';
 import * as orderAction from '../../redux/order/actions/actions';
-import {showNotification} from '../../navigation/function';
+import {showNotification, showModalNavigation} from '../../navigation/function';
 import {AsyncStorage} from 'react-native';
+import { Icon, Header, ListItem, Card } from 'react-native-elements'
 import {WAITING} from '../../constants/orderStatus';
 class Order extends Component {
   constructor(props) {
@@ -22,21 +23,18 @@ class Order extends Component {
     this.props.getAllOrder(stationId);
   };
   componentDidUpdate() {
-    const {dataOrders} = this.props;
-    const newOrder = dataOrders.filter(element => {
-      return element.status === WAITING;
-    });
-    if (newOrder.length > 0) {
-      showNotification(
-        'notificationNewOrder',
-        'Bạn có cuốc mới',
-        null,
-        newOrder,
-      );
-    }
+    // const {dataOrders} = this.props;
+    // const newOrder = dataOrders.filter(element => {
+    //   return element.status === WAITING;
+    // });
+    // if (newOrder.length > 0) {
+    //   showModalNavigation('notificationNewOrder', newOrder, 'Bạn có cuốc mới');
+    // }
   }
   render() {
     const {dataOrders, loading} = this.props;
+    console.log('8888888888888888', JSON.stringify(dataOrders, null, 4));
+
     if (loading) {
       return (
         <View style={styles.loading}>
@@ -47,6 +45,7 @@ class Order extends Component {
       return (
         <ScrollView>
           <View style={styles.container}>
+
             <FlatList
               data={dataOrders}
               renderItem={({item}) => <OrderItem item={item} />}
