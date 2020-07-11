@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Vibration,
 } from 'react-native';
 import NewOrder from '../../components/order/newOrder';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -16,28 +17,36 @@ import {alertConfirm} from '../../navigation/function';
 import {Navigation} from 'react-native-navigation';
 import {format} from 'date-fns';
 import {ACCEPTED, REJECTED} from '../../constants/orderStatus';
-import {APP_COLOR, ERROR_COLOR} from "../../utils/colors";
+import {APP_COLOR, ERROR_COLOR} from '../../utils/colors';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 class NotificationNewOrder extends Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       componentId: null,
-    }
+    };
   }
-  confirmOrder = (orderId) => {
-    console.log('ffff', this.props.componentId);
+  componentWillMount = () => {
+    Vibration.vibrate(2000);
+  };
+  confirmOrder = orderId => {
+    const {componentId} = this.props;
     alertConfirm(
       'alertConfirm',
       'Bạn chắc chắn muốn nhận cuốc?',
       null,
       'Xác nhận',
-      {onPress: () => this.props.updateStatusOrder(ACCEPTED, orderId, this.props.componentId)},
+      {
+        onPress: () =>
+          this.props.updateStatusOrder(ACCEPTED, orderId, componentId),
+      },
     );
   };
-  cancelOrder = (orderId) => {
+
+  cancelOrder = orderId => {
+    const {componentId} = this.props;
     alertConfirm(
       'alertConfirm',
       'Bạn chắc chắn muốn hủy cuốc?',
@@ -45,16 +54,14 @@ class NotificationNewOrder extends Component {
       'Xác nhận hủy',
       {
         onPress: () =>
-          this.props.updateStatusOrder(REJECTED, orderId, this.props.componentId),
+          this.props.updateStatusOrder(REJECTED, orderId, componentId),
       },
     );
   };
-  componentDidUpdate(){
-
-  }
   render() {
-    const {value, componentId} = this.props;
-//01cbfd
+    const {value} = this.props;
+
+    //01cbfd
     return (
       <>
         <View style={styles.container}>
@@ -72,7 +79,9 @@ class NotificationNewOrder extends Component {
                 source={require('../../assets/image/max.jpg')}
                 style={styles.imageUser}
               />
-              <Text style={{marginTop: 5, fontSize: 20}}>{value[0].customerName}</Text>
+              <Text style={{marginTop: 5, fontSize: 20}}>
+                {value[0].customerName}
+              </Text>
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -89,22 +98,26 @@ class NotificationNewOrder extends Component {
                     <Icon
                       style={styles.icon}
                       name="ios-bicycle"
-                      color= {APP_COLOR}
+                      color={APP_COLOR}
                       size={23}
                     />
                     <Text style={styles.highlight}>Thông tin dịch vụ </Text>
                   </View>
-                  <Text style={{paddingLeft: 30}}>{value[0].station.vehicle}</Text>
+                  <Text style={{paddingLeft: 30}}>
+                    {value[0].station.vehicle}
+                  </Text>
                 </View>
                 <View style={{marginBottom: 12}}>
                   <View style={styles.row}>
                     <Icon
                       style={styles.icon}
                       name="ios-car"
-                      color= {APP_COLOR}
+                      color={APP_COLOR}
                       size={23}
                     />
-                    <Text style={styles.highlight}>{value[0].distance/1000} km</Text>
+                    <Text style={styles.highlight}>
+                      {value[0].distance / 1000} km
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -114,7 +127,7 @@ class NotificationNewOrder extends Component {
                   <Icon
                     style={styles.icon}
                     name="ios-navigate"
-                    color= {APP_COLOR}
+                    color={APP_COLOR}
                     size={23}
                   />
                   <Text style={styles.highlight}>Địa chỉ </Text>
@@ -127,14 +140,15 @@ class NotificationNewOrder extends Component {
                   <Icon
                     style={styles.icon}
                     name="ios-time"
-                    color= {APP_COLOR}
+                    color={APP_COLOR}
                     size={23}
                   />
-                  <Text style={styles.highlight}>
-                    Thời gian
-                  </Text>
+                  <Text style={styles.highlight}>Thời gian</Text>
                 </View>
-                <Text style={{paddingLeft: 30}}> {format(new Date(value[0].createdOn), 'dd-MM-yyyy H:mma')}</Text>
+                <Text style={{paddingLeft: 30}}>
+                  {' '}
+                  {format(new Date(value[0].createdOn), 'dd-MM-yyyy H:mma')}
+                </Text>
               </View>
 
               <View style={[{paddingVertical: 12}, styles.border]}>
@@ -142,7 +156,7 @@ class NotificationNewOrder extends Component {
                   <Icon
                     style={styles.icon}
                     name="ios-build"
-                    color= {APP_COLOR}
+                    color={APP_COLOR}
                     size={23}
                   />
                   <Text style={styles.highlight}>Dịch vụ </Text>
@@ -150,14 +164,25 @@ class NotificationNewOrder extends Component {
                 {value[0].services
                   ? value[0].services.map(element => {
                       return (
-                        <View style={[styles.row, {justifyContent: "space-between"}]}>
+                        <View
+                          style={[
+                            styles.row,
+                            {justifyContent: 'space-between'},
+                          ]}>
                           <Text style={{paddingLeft: 30}}>{element.name}</Text>
                           <Text>{element.price} vnd</Text>
                         </View>
                       );
                     })
                   : null}
-                  <Text style={{textAlign: "right", marginVertical: 10, color: ERROR_COLOR}}>{value[0].totalPrice} vnd</Text>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    marginVertical: 10,
+                    color: ERROR_COLOR,
+                  }}>
+                  {value[0].totalPrice} vnd
+                </Text>
               </View>
 
               <View style={[{paddingVertical: 12}, styles.border]}>
@@ -165,7 +190,7 @@ class NotificationNewOrder extends Component {
                   <Icon
                     style={styles.icon}
                     name="ios-create"
-                    color= {APP_COLOR}
+                    color={APP_COLOR}
                     size={23}
                   />
                   <Text style={styles.highlight}>Lưu ý </Text>
@@ -184,7 +209,7 @@ class NotificationNewOrder extends Component {
               },
               styles.button,
             ]}
-            onPress={(componentId) => {
+            onPress={componentId => {
               this.cancelOrder(value[0].id);
             }}>
             <Icon style={styles.icon} name="ios-close" color="red" size={35} />
@@ -198,7 +223,7 @@ class NotificationNewOrder extends Component {
               },
               styles.button,
             ]}
-            onPress={(componentId) => {
+            onPress={componentId => {
               this.confirmOrder(value[0].id);
             }}>
             <Text style={{color: 'white'}}>Nhận sửa xe</Text>
@@ -283,9 +308,9 @@ const mapStateToProps = store => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    updateStatusOrder: (status, orderId) => {
-      dispatch(orderAction.updateStatus(status, orderId));
-    }
+    updateStatusOrder: (status, orderId, componentId) => {
+      dispatch(orderAction.updateStatus(status, orderId, componentId));
+    },
   };
 };
 

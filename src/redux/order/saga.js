@@ -18,7 +18,7 @@ function* getAllOrder(actions) {
     const newOrder = yield response.data.sources.filter(element => {
       return element.status === WAITING;
     });
-    console.log('response111111111111',newOrder);
+    // console.log('response111111111111',newOrder);
 
     if (newOrder.length > 0) {
       yield showModalNavigation('notificationNewOrder', newOrder, 'Bạn có cuốc mới');
@@ -29,7 +29,6 @@ function* getAllOrder(actions) {
 }
 
 function* updateStatus(actions) {
-  console.log("ddddddddd", actions);
   try {
     const token = yield AsyncStorage.getItem('token');
     const response = yield call(

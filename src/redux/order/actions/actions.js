@@ -72,7 +72,7 @@ export const cancelConfirmFailed = () => {
 //CHANGE STATUS
 
 export const updateStatus = (status, orderId, componentId) => {
-  alert('component id', componentId);
+  console.log('component id', componentId);
   return {
     type: typesAction.CHANGE_STATUS,
     orderId,
