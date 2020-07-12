@@ -11,10 +11,10 @@ import serviceSetting from '../screens/services/serviceSetting';
 import login from '../screens/authentication/login';
 import register from '../screens/authentication/register';
 import profileUser from '../screens/authentication/profileUser';
-import bookMain from '../screens/book/bookMain';
-import bookDetail from '../screens/book/bookDetail';
+import orderMain from '../screens/order/orderMain';
+import orderDetail from '../screens/order/orderDetail';
 import alertConfirm from '../components/alertConfirm';
-import notificationNewOrder from '../screens/book/notificationNewOrder';
+import notificationNewOrder from '../screens/order/notificationNewOrder';
 import sideBar from './sideBar';
 import RegisterStation from '../screens/authentication/registerStation';
 console.disableYellowBox = true;
@@ -74,15 +74,15 @@ export function registerScreens() {
   );
 
   Navigation.registerComponent(
-    'bookMain',
-    () => ReduxProvider(bookMain),
-    () => bookMain,
+    'orderMain',
+    () => ReduxProvider(orderMain),
+    () => orderMain,
   );
 
   Navigation.registerComponent(
-    'bookDetail',
-    () => ReduxProvider(bookDetail),
-    () => bookDetail,
+    'orderDetail',
+    () => ReduxProvider(orderDetail),
+    () => orderDetail,
   );
   Navigation.registerComponent(
     'alertConfirm',

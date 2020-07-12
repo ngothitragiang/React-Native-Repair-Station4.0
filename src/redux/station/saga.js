@@ -51,7 +51,7 @@ function* getMyStation() {
     const response = yield call(getMyStationApi, token);
     yield put(stationAction.getMyStationSuccess(response.data));
   } catch (error) {
-    console.log('error', error.data);
+    console.log('error', error);
   }
 }
 
@@ -62,7 +62,7 @@ function* changePower(actions) {
       changePowerApi,
       actions.stationId,
       {
-        hasAmbulatory: actions.isOn,
+        isAvailable: actions.isOn,
       },
       token,
     );

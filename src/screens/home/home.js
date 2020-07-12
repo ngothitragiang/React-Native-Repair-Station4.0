@@ -20,7 +20,8 @@ import * as stationAction from '../../redux/station/actions/actions';
 import {AsyncStorage} from 'react-native';
 import {APP_COLOR} from '../../utils/colors';
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
-
+import messaging from '@react-native-firebase/messaging';
+import {Alert} from 'react-native';
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -43,20 +44,23 @@ const DATA = [
     title: 'Third111 Item',
   },
 ];
+
 class HomeFixer extends Component {
   constructor(props) {
     super(props);
   }
   changeToggleSwitch = async isOn => {
+    console.log('isons', isOn);
     await this.props.changePower(this.props.stationInformation.id, isOn);
   };
   async componentDidUpdate() {
-    const {hasAmbulatory} = this.props;
-    if (hasAmbulatory) {
+    const {isAvailable} = this.props;
+    if (isAvailable) {
       const stationId = await AsyncStorage.getItem('stationId');
       this.props.getStationById(stationId);
     }
   }
+
   openSideBar = () => {
     Navigation.mergeOptions('sideBar', {
       sideMenu: {
@@ -66,6 +70,7 @@ class HomeFixer extends Component {
       },
     });
   };
+
   render() {
     const {stationInformation} = this.props;
     return (
@@ -86,7 +91,7 @@ class HomeFixer extends Component {
             </TouchableOpacity>
 
             <ToggleSwitch
-              isOn={stationInformation.hasAmbulatory}
+              isOn={stationInformation.isAvailable}
               onColor="#4dc2ff"
               offColor="red"
               size="medium"
@@ -226,7 +231,7 @@ const mapStateToProps = store => {
   return {
     allStation: store.StationReducers.allStation,
     stationInformation: store.StationReducers.station,
-    hasAmbulatory: store.StationReducers.changePower,
+    isAvailable: store.StationReducers.changePower,
   };
 };
 const mapDispatchToProps = dispatch => {

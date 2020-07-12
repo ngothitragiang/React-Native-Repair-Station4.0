@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import firebase from 'react-native-firebase';
-
 import {Navigation} from 'react-native-navigation';
 import InputText from '../../components/textInput';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
 import {connect} from 'react-redux';
 import * as serviceAction from '../../redux/service/actions/actions';
+import {APP_COLOR, ERROR_COLOR} from '../../utils/colors';
 class FormService extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +38,7 @@ class FormService extends Component {
           {
             id: 'deleteBtn',
             icon: require('../../assets/image/icons-trash.png'),
-            color: 'red',
+            color: ERROR_COLOR,
           },
         ],
       },
@@ -138,12 +137,12 @@ class FormService extends Component {
 
           <View style={styles.containerButton}>
             <TouchableOpacity
-              style={[styles.button, {backgroundColor: 'red'}]}
+              style={[styles.button, {backgroundColor: ERROR_COLOR}]}
               onPress={() => Navigation.dismissModal(this.props.componentId)}>
               <Text style={styles.textButton}>Hủy</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.button, {backgroundColor: '#44db5e'}]}
+              style={[styles.button, {backgroundColor: APP_COLOR}]}
               onPress={this.handleButton}>
               <Text style={styles.textButton}>
                 {value.item ? 'Cập nhật' : 'Thêm'}

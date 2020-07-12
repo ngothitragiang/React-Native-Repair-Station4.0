@@ -25,11 +25,13 @@ class SideBar extends Component {
   };
   render() {
     const {user} = this.props;
+    // console.log('user', JSON.stringify(user, null, 4));
+
     return (
       <View style={styles.container}>
         <Header
           centerComponent={{
-            text: user?.name.toUpperCase() || '',
+            text: user.name.toUpperCase() || '',
             style: {color: '#fff', fontSize: 18, marginHorizontal: -30},
           }}
           rightComponent={

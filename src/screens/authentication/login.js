@@ -12,9 +12,8 @@ import InputText from '../../components/textInput';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as authenticationAction from '../../redux/authentication/actions/actions';
-import firebase from 'react-native-firebase';
 import {showModalNavigation, setRoot} from '../../navigation/function';
-
+import messaging from '@react-native-firebase/messaging';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -28,8 +27,7 @@ class Login extends Component {
     };
   }
   componentDidMount() {
-    firebase
-      .messaging()
+    messaging()
       .getToken()
       .then(fcmToken => {
         if (fcmToken) {

@@ -6,7 +6,6 @@ import store from '../store';
 import {showNotification} from '../../navigation/function';
 
 import {Navigation} from 'react-native-navigation';
-import firebase from 'react-native-firebase';
 import {eventChannel} from 'redux-saga';
 import {AsyncStorage} from 'react-native';
 import {
@@ -29,7 +28,6 @@ function* addService(actions) {
     );
     yield Navigation.dismissModal(actions.componentId);
   } catch (error) {
-    console.log('add error', JSON.stringify(error, null, 4));
     console.log('error add service', error);
     yield showNotification(
       'showNotification',
